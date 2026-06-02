@@ -1,0 +1,18 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1080" viewBox="0 0 720 1080" role="img" aria-label="RRR demo poster">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a1211"/>
+      <stop offset="0.48" stop-color="#8e1f1d"/>
+      <stop offset="1" stop-color="#f2a23a"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="1080" fill="url(#bg)"/>
+  <circle cx="360" cy="395" r="230" fill="#f2a23a" opacity="0.22"/>
+  <path d="M175 645 C230 470 250 280 360 200 C470 280 490 470 545 645" fill="none" stroke="#ffd27a" stroke-width="20" opacity="0.88"/>
+  <path d="M245 595 C310 525 410 525 475 595" fill="none" stroke="#ffffff" stroke-width="12" opacity="0.75"/>
+  <path d="M180 690 H540" stroke="#ffffff" stroke-width="7" opacity="0.58"/>
+  <text x="360" y="805" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="138" font-weight="900" fill="#ffffff">RRR</text>
+  <text x="360" y="868" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#ffd27a">Action • Drama • Historical</text>
+  <text x="360" y="958" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#ffffff" opacity="0.88">Rise. Roar. Reserve.</text>
+</svg>
+

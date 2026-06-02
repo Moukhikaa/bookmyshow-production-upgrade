@@ -1,0 +1,22 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1080" viewBox="0 0 720 1080" role="img" aria-label="Oppenheimer demo poster">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15110f"/>
+      <stop offset="0.5" stop-color="#51301e"/>
+      <stop offset="1" stop-color="#f06c2f"/>
+    </linearGradient>
+    <radialGradient id="flash" cx="50%" cy="44%" r="45%">
+      <stop offset="0" stop-color="#fff3b0"/>
+      <stop offset="0.35" stop-color="#f06c2f"/>
+      <stop offset="1" stop-color="#15110f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="720" height="1080" fill="url(#bg)"/>
+  <circle cx="360" cy="430" r="270" fill="url(#flash)" opacity="0.9"/>
+  <path d="M360 210 C330 340 315 455 238 610 H482 C405 455 390 340 360 210Z" fill="#1a1411" opacity="0.82"/>
+  <path d="M170 690 H550" stroke="#ffe0a3" stroke-width="6" opacity="0.7"/>
+  <text x="360" y="805" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="60" font-weight="900" fill="#ffffff">OPPENHEIMER</text>
+  <text x="360" y="865" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#ffe0a3">Biography • Drama • Historical</text>
+  <text x="360" y="955" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#ffffff" opacity="0.86">A powerful night at the movies</text>
+</svg>
+

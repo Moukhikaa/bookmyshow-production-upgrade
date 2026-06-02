@@ -1,0 +1,199 @@
+{% extends "users/basic.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .date-strip {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(86px, 1fr));
+        gap: 8px;
+        margin: 16px 0 22px;
+    }
+    .date-chip {
+        border: 1px solid #d6d9de;
+        border-radius: 8px;
+        color: #1f2933;
+        display: block;
+        padding: 10px 8px;
+        text-align: center;
+        text-decoration: none;
+        background: #fff;
+    }
+    .date-chip:hover {
+        border-color: #28a745;
+        color: #155724;
+        text-decoration: none;
+    }
+    .date-chip.active {
+        border-color: #28a745;
+        background: #28a745;
+        color: #fff;
+    }
+    .date-chip.disabled-day {
+        opacity: 0.5;
+    }
+    .date-chip .day {
+        display: block;
+        font-weight: 700;
+    }
+    .date-chip .count {
+        display: block;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    .weekend-pill {
+        display: inline-block;
+        font-size: 11px;
+        margin-top: 4px;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: #fff3cd;
+        color: #856404;
+    }
+    .date-chip.active .weekend-pill {
+        background: rgba(255,255,255,0.25);
+        color: #fff;
+    }
+    .trailer-shell {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #111;
+    }
+    .trailer-thumb {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+    }
+    .trailer-play {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: rgba(0, 0, 0, 0.25);
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+    }
+    .trailer-play span {
+        background: #dc3545;
+        border-radius: 999px;
+        padding: 14px 20px;
+    }
+    .trailer-fallback {
+        display: none;
+    }
+    @media (max-width: 768px) {
+        .date-strip {
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
+    }
+</style>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <img
+                src="{{ movie.poster_url }}"
+                class="img-fluid rounded shadow-sm"
+                alt="{{ movie.name }}"
+                loading="lazy"
+                decoding="async"
+                onerror="this.onerror=null;this.src='{% static 'movies/demo_posters/fallback.svg' %}';"
+            >
+        </div>
+        <div class="col-lg-8">
+            <h1>{{ movie.name }}</h1>
+            <p><i class="fas fa-star text-warning"></i> {{ movie.rating }}</p>
+            <p>{{ movie.description }}</p>
+            <p><strong>Cast:</strong> {{ movie.cast }}</p>
+            <p>
+                {% for genre in movie.genres.all %}<span class="badge badge-primary mr-1">{{ genre.name }}</span>{% endfor %}
+                {% for language in movie.languages.all %}<span class="badge badge-secondary mr-1">{{ language.name }}</span>{% endfor %}
+            </p>
+        </div>
+    </div>
+
+    <section class="my-4">
+        <h3>Trailer</h3>
+        {% if movie.trailer_embed_url %}
+        <div class="trailer-shell" data-trailer-src="{{ movie.trailer_embed_url }}" data-trailer-title="{{ movie.name }} trailer">
+            <img
+                class="trailer-thumb"
+                src="{{ movie.trailer_thumbnail_url }}"
+                alt="{{ movie.name }} trailer thumbnail"
+                loading="lazy"
+                onerror="this.closest('.trailer-shell').querySelector('.trailer-fallback').style.display='block'; this.style.display='none'; this.closest('.trailer-shell').querySelector('.trailer-play').style.display='none';"
+            >
+            <button class="trailer-play" type="button" aria-label="Play {{ movie.name }} trailer">
+                <span><i class="fas fa-play mr-2"></i>Play Trailer</span>
+            </button>
+            <div class="alert alert-light border trailer-fallback m-0">
+                Trailer preview is unavailable. The movie can still be booked.
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-light border">Trailer is not available for this movie.</div>
+        {% endif %}
+    </section>
+
+    <section class="my-4">
+        <h3>This Week's Shows</h3>
+        <p class="text-muted mb-2">
+            Booking window: {{ week_start|date:"M d" }} - {{ week_end|date:"M d, Y" }}.
+            Weekend shows are marked for quick booking.
+        </p>
+        <div class="date-strip" aria-label="Select show date">
+            {% for item in week_schedule %}
+            <a
+                class="date-chip {% if item.is_selected %}active{% endif %} {% if not item.show_count %}disabled-day{% endif %}"
+                href="?date={{ item.date|date:'Y-m-d' }}"
+            >
+                <span class="day">{{ item.date|date:"D" }}</span>
+                <span>{{ item.date|date:"M d" }}</span>
+                <span class="count">{{ item.show_count }} show{{ item.show_count|pluralize }}</span>
+                {% if item.is_weekend %}<span class="weekend-pill">Weekend</span>{% endif %}
+            </a>
+            {% endfor %}
+        </div>
+        <h5 class="mb-3">Shows on {{ selected_date|date:"l, M d" }}</h5>
+        {% for theater in theaters %}
+        <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+            <div>
+                <strong>{{ theater.name }}</strong><br>
+                <span class="text-muted">{{ theater.time|date:"D, M d, h:i A" }}</span>
+            </div>
+            <a href="{% url 'book_seats' theater.id %}" class="btn btn-success">Book Seats</a>
+        </div>
+        {% empty %}
+        <p>No shows are available on this date. Pick another date from this week.</p>
+        {% endfor %}
+    </section>
+</div>
+<script>
+    document.querySelectorAll(".trailer-shell").forEach(function (shell) {
+        var button = shell.querySelector(".trailer-play");
+        if (!button) {
+            return;
+        }
+        button.addEventListener("click", function () {
+            var iframe = document.createElement("iframe");
+            iframe.className = "embed-responsive-item";
+            iframe.src = shell.dataset.trailerSrc;
+            iframe.title = shell.dataset.trailerTitle;
+            iframe.loading = "lazy";
+            iframe.referrerPolicy = "strict-origin-when-cross-origin";
+            iframe.sandbox = "allow-scripts allow-same-origin allow-presentation";
+            iframe.allow = "accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share";
+            iframe.allowFullscreen = true;
+
+            var wrapper = document.createElement("div");
+            wrapper.className = "embed-responsive embed-responsive-16by9";
+            wrapper.appendChild(iframe);
+            shell.replaceChildren(wrapper);
+        });
+    });
+</script>
+{% endblock %}

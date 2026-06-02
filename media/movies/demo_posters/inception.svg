@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1080" viewBox="0 0 720 1080" role="img" aria-label="Inception demo poster">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.52" stop-color="#15405f"/>
+      <stop offset="1" stop-color="#0a1017"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="1080" fill="url(#bg)"/>
+  <g fill="none" stroke="#9bd3ff" stroke-width="5" opacity="0.65">
+    <path d="M120 190 H600 V310 H180 V430 H540 V550 H240 V670 H480"/>
+    <path d="M600 190 V910 M540 430 V850 M480 670 V910"/>
+    <path d="M120 190 V910 H600"/>
+  </g>
+  <circle cx="360" cy="515" r="122" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.82"/>
+  <circle cx="360" cy="515" r="70" fill="none" stroke="#9bd3ff" stroke-width="5" opacity="0.9"/>
+  <text x="360" y="800" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" fill="#ffffff">INCEPTION</text>
+  <text x="360" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#9bd3ff">Sci-Fi • Thriller</text>
+  <text x="360" y="947" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#ffffff" opacity="0.82">A dream within a booking</text>
+</svg>
+

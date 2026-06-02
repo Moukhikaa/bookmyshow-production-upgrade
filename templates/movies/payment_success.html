@@ -1,0 +1,14 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="alert alert-success">Payment verified and booking confirmed.</div>
+    <h3>Your Tickets</h3>
+    {% for booking in bookings %}
+    <div class="border-bottom py-2">
+        {{ booking.movie.name }} | {{ booking.theater.name }} | Seat {{ booking.seat.seat_number }} | Payment {{ booking.payment_id }}
+    </div>
+    {% endfor %}
+    <a href="{% url 'profile' %}" class="btn btn-primary mt-4">View Profile</a>
+</div>
+{% endblock %}

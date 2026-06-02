@@ -1,0 +1,19 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1080" viewBox="0 0 720 1080" role="img" aria-label="Dangal demo poster">
+  <defs>
+    <linearGradient id="mat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6c66d"/>
+      <stop offset="0.58" stop-color="#c27734"/>
+      <stop offset="1" stop-color="#4d2e1b"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="1080" fill="url(#mat)"/>
+  <circle cx="360" cy="380" r="205" fill="#fff1d1" opacity="0.28"/>
+  <path d="M170 560 C245 470 475 470 550 560" fill="none" stroke="#fff8e6" stroke-width="17" opacity="0.8"/>
+  <path d="M250 620 H470 M300 555 L250 690 M420 555 L470 690" stroke="#2f1e16" stroke-width="18" stroke-linecap="round" opacity="0.85"/>
+  <circle cx="300" cy="475" r="38" fill="#2f1e16" opacity="0.88"/>
+  <circle cx="420" cy="475" r="38" fill="#2f1e16" opacity="0.88"/>
+  <text x="360" y="805" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="900" fill="#ffffff">DANGAL</text>
+  <text x="360" y="866" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#fff1d1">Biography • Drama • Sports</text>
+  <text x="360" y="954" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#ffffff" opacity="0.88">Champion seats for the big match</text>
+</svg>
+

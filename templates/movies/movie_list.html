@@ -1,0 +1,152 @@
+{% extends "users/basic.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Movies</h1>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form method="GET" action="{% url 'movie_list' %}" class="search-bar">
+                <div class="input-group">
+                    <input
+                        class="form-control form-control-lg"
+                        name="search"
+                        placeholder="Search for Movies, Events, Plays, Sports and Activities"
+                        type="text"
+                        value="{{ request.GET.search|default_if_none:'' }}"
+                        aria-label="Search for movies"
+                    />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Genres</label>
+                        {% for genre in genres %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="genres" value="{{ genre.id }}" id="genre-{{ genre.id }}" {% if genre.id|stringformat:"s" in selected_genres %}checked{% endif %}>
+                            <label class="form-check-label" for="genre-{{ genre.id }}">{{ genre.name }} ({{ genre.movie_count }})</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="font-weight-bold">Languages</label>
+                        {% for language in languages %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="languages" value="{{ language.id }}" id="language-{{ language.id }}" {% if language.id|stringformat:"s" in selected_languages %}checked{% endif %}>
+                            <label class="form-check-label" for="language-{{ language.id }}">{{ language.name }} ({{ language.movie_count }})</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="font-weight-bold" for="sort">Sort</label>
+                        <select class="form-control" name="sort" id="sort">
+                            <option value="name" {% if request.GET.sort == "name" %}selected{% endif %}>Name</option>
+                            <option value="rating" {% if request.GET.sort == "rating" %}selected{% endif %}>Rating</option>
+                            <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>Newest</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" id="movieList">
+        {% for movie in movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img
+                    src="{{ movie.poster_url }}"
+                    class="card-img-top"
+                    alt="{{ movie.name }}"
+                    style="height: 300px; object-fit: cover;"
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.onerror=null;this.src='{% static 'movies/demo_posters/fallback.svg' %}';"
+                >
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.name }}</h5>
+                    <p class="card-text">
+                        <i class="fas fa-star text-warning"></i> {{ movie.rating }}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <i class="fas fa-users"></i> Cast: {{ movie.cast }}
+                        </small>
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{% url 'movie_detail' movie.id %}" class="btn btn-outline-primary btn-block">
+                        View Details <i class="fas fa-chevron-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="lead">No movies found. Try a different search term.</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav aria-label="Movie pagination">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{{ querystring }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?{{ querystring }}&page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        // Add animation to cards on hover
+        $('.card').hover(
+            function() { $(this).addClass('shadow'); },
+            function() { $(this).removeClass('shadow'); }
+        );
+
+        $('input[type="checkbox"], select[name="sort"]').on('change', function() {
+            $(this).closest('form').submit();
+        });
+    });
+</script>
+<!-- <h1>Movies</h1>
+<ul>
+    {% for movie in movies%}
+    <li>
+        <img src="{{movie.poster_url}}" alt="image" >
+        <strong>{{movie.name}}</strong>{{movie.rating}}
+        <p>Cast:{{movie.cast}}</p>
+        <a href="{% url 'theater_list' movie.id %}">View Theaters</a>
+    </li>
+    {% endfor %}
+</ul> -->
+{% endblock %}

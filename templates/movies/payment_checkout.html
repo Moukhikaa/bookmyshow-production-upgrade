@@ -1,0 +1,52 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2>Complete Payment</h2>
+    {% if expired %}
+    <div class="alert alert-warning">Your 2 minute reservation expired. Please select seats again.</div>
+    {% else %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4>{{ reservation.theater.movie.name }}</h4>
+            <p>{{ reservation.theater.name }} | {{ reservation.theater.time }}</p>
+            <p><strong>Seats:</strong> {% for seat in reservation.seats.all %}{{ seat.seat_number }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p><strong>Amount:</strong> INR {{ payment.amount }}</p>
+
+            {% if razorpay_key_id %}
+            <form action="{{ callback_url }}" method="POST">
+                {% csrf_token %}
+                <script
+                    src="https://checkout.razorpay.com/v1/checkout.js"
+                    data-key="{{ razorpay_key_id }}"
+                    data-amount="{{ amount_paise }}"
+                    data-currency="{{ payment.currency }}"
+                    data-order_id="{{ payment.provider_order_id }}"
+                    data-buttontext="Pay Securely"
+                    data-name="BookMyShow Clone"
+                    data-description="Movie ticket booking"
+                    data-theme.color="#0d6efd">
+                </script>
+            </form>
+            {% elif allow_development_payments %}
+            <form action="{% url 'payment_success' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="razorpay_order_id" value="{{ payment.provider_order_id }}">
+                <input type="hidden" name="razorpay_payment_id" value="dev_payment_{{ payment.id }}">
+                <input type="hidden" name="razorpay_signature" value="dev">
+                <button type="submit" class="btn btn-success">Confirm Development Payment</button>
+            </form>
+            {% else %}
+            <div class="alert alert-warning">
+                Payment gateway is not configured. Please contact the administrator.
+            </div>
+            {% endif %}
+            <form action="{% url 'payment_cancel' reservation.id %}" method="POST" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-secondary">Cancel Payment</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

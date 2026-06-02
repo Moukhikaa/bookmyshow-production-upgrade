@@ -1,0 +1,7 @@
+<h2>Your booking is confirmed</h2>
+<p>Hi {{ user.username }},</p>
+<p><strong>Movie:</strong> {{ bookings.0.movie.name }}</p>
+<p><strong>Theater:</strong> {{ bookings.0.theater.name }}</p>
+<p><strong>Show:</strong> {{ bookings.0.theater.time }}</p>
+<p><strong>Seats:</strong> {% for booking in bookings %}{{ booking.seat.seat_number }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+<p><strong>Payment ID:</strong> {{ payment_id }}</p>

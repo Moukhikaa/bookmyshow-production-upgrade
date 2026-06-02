@@ -1,0 +1,274 @@
+{% extends "users/basic.html" %} 
+{% block content %}
+<style>
+    /* Styling */
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.movie-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.date-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(86px, 1fr));
+  gap: 8px;
+  margin: 16px 0 22px;
+}
+
+.date-chip {
+  border: 1px solid #d6d9de;
+  border-radius: 8px;
+  color: #1f2933;
+  display: block;
+  padding: 10px 8px;
+  text-align: center;
+  text-decoration: none;
+  background: #fff;
+}
+
+.date-chip:hover {
+  border-color: #28a745;
+  color: #155724;
+  text-decoration: none;
+}
+
+.date-chip.active {
+  border-color: #28a745;
+  background: #28a745;
+  color: #fff;
+}
+
+.date-chip.disabled-day {
+  opacity: 0.5;
+}
+
+.date-chip .day,
+.date-chip .count {
+  display: block;
+}
+
+.date-chip .day {
+  font-weight: 700;
+}
+
+.date-chip .count {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.weekend-pill {
+  display: inline-block;
+  font-size: 11px;
+  margin-top: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #856404;
+}
+
+.date-chip.active .weekend-pill {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+/* Theatre Info Styling */
+.theatre-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  flex-wrap: wrap; /* Responsive wrapping */
+}
+
+.theatre-info strong {
+  font-size: 18px;
+  flex: 1;
+}
+
+/* Info Icons Styling */
+.info-icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px; /* Space between icons */
+  margin-top: 10px;
+  flex: 2;
+}
+
+.info-icons i {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.info-section {
+  flex: 1;
+  text-align: right;
+}
+
+/* Show Times Styling */
+.show-times {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  flex-wrap: wrap; /* Responsive wrapping */
+}
+
+.time-box {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: center;
+  background-color: #f1f1f1;
+  margin-bottom: 10px;
+  flex: 1;
+  min-width: 100px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.time-box:hover {
+  transform: scale(1.05);
+  background-color: #28a745;
+  color: white;
+}
+
+.time-box span {
+  display: block;
+  font-size: 12px;
+  color: black;
+}
+.time-box span:hover {
+  color: white;
+}
+
+/* Non-Cancellable Styling */
+.non-cancellable {
+  color: #ffc107;
+  font-size: 12px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.non-cancellable i {
+  margin-right: 5px;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .theatre-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-section {
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .show-times {
+    justify-content: space-between;
+  }
+
+  .time-box {
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+  }
+
+  .date-strip {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+  </style>
+  
+  <body>
+    <div class="container">
+      <!-- Movie Title -->
+      <div class="movie-title">Movie - {{ movie.name }}</div>
+      <p class="text-muted text-center">
+        Booking window: {{ week_start|date:"M d" }} - {{ week_end|date:"M d, Y" }}
+      </p>
+
+      <div class="date-strip" aria-label="Select show date">
+        {% for item in week_schedule %}
+        <a
+          class="date-chip {% if item.is_selected %}active{% endif %} {% if not item.show_count %}disabled-day{% endif %}"
+          href="?date={{ item.date|date:'Y-m-d' }}"
+        >
+          <span class="day">{{ item.date|date:"D" }}</span>
+          <span>{{ item.date|date:"M d" }}</span>
+          <span class="count">{{ item.show_count }} show{{ item.show_count|pluralize }}</span>
+          {% if item.is_weekend %}<span class="weekend-pill">Weekend</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+
+      <h5 class="mb-3">Shows on {{ selected_date|date:"l, M d" }}</h5>
+  
+      <!-- Conditional Check for Theaters -->
+      {% if theaters %}
+        <!-- Theater List and Showtimes -->
+        {% for theater in theaters %}
+        <div class="theatre-info">
+          <div>
+            <strong>{{ theater.name }} Theater</strong>
+            <div class="info-icons mt-2">
+              <i class="fas fa-mobile-alt text-success"></i> M-Ticket
+              <i class="fas fa-utensils text-warning ms-3"></i> Food & Beverage
+              <i class="fas fa-parking text-primary ms-3"></i> Parking Available
+              <i class="fas fa-wheelchair text-info ms-3"></i> Wheelchair Access
+              <i class="fas fa-glasses text-danger ms-3"></i> 3D Show Available
+            </div>
+          </div>
+        </div>
+  
+        <div class="show-times">
+          <div class="time-box">
+            {{ theater.time|date:"D, M d, h:i A" }}
+            <a href="{% url 'book_seats' theater.id %}">
+              <span>Book Now</span>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <!-- Message when no theaters are available -->
+        <div class="no-theaters mt-4">
+          <p>Sorry, no shows are available on this date. Pick another date from this week.</p>
+        </div>
+      {% endif %}
+  
+      <div class="non-cancellable mt-4">
+        <i class="fas fa-circle text-warning"></i> Non-cancellable
+      </div>
+    </div>
+  </body>
+<!-- <h1>Theater for {{movie.name}}</h1>
+<ul>
+  {% for theater in theaters %}
+  <li>
+    <strong>{{theater.name}}</strong>{{theater.time}}
+    <a href="{% url 'book_seats' theater.id %}">View Seats</a>
+  </li>
+  {% endfor %}
+</ul> -->
+{% endblock %}

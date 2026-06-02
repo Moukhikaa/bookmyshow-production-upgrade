@@ -1,0 +1,22 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1080" viewBox="0 0 720 1080" role="img" aria-label="The Avengers demo poster">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18212f"/>
+      <stop offset="0.55" stop-color="#29384f"/>
+      <stop offset="1" stop-color="#b3292e"/>
+    </linearGradient>
+    <radialGradient id="core" cx="50%" cy="43%" r="42%">
+      <stop offset="0" stop-color="#f7f0c8"/>
+      <stop offset="0.28" stop-color="#e94b3c"/>
+      <stop offset="1" stop-color="#18212f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="720" height="1080" fill="url(#bg)"/>
+  <circle cx="360" cy="420" r="260" fill="url(#core)" opacity="0.85"/>
+  <path d="M360 170 L420 355 L615 355 L458 470 L518 655 L360 540 L202 655 L262 470 L105 355 L300 355 Z" fill="none" stroke="#f6d365" stroke-width="22" opacity="0.92"/>
+  <path d="M110 740 H610" stroke="#ffffff" stroke-opacity="0.55" stroke-width="4"/>
+  <text x="360" y="815" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800" fill="#ffffff">THE AVENGERS</text>
+  <text x="360" y="875" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#f6d365">Action • Adventure • Sci-Fi</text>
+  <text x="360" y="965" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#ffffff" opacity="0.85">Book your team-up experience</text>
+</svg>
+

@@ -1,0 +1,54 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Booking Analytics</h1>
+<p>Aggregations are cached for five minutes and computed in the database.</p>
+
+<h2>Daily Revenue</h2>
+<table class="adminlist">
+    <tr><th>Date</th><th>Bookings</th><th>Revenue</th></tr>
+    {% for row in daily_revenue %}
+    <tr><td>{{ row.period }}</td><td>{{ row.bookings }}</td><td>{{ row.total }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Popular Movies</h2>
+<table class="adminlist">
+    <tr><th>Movie</th><th>Bookings</th><th>Revenue</th></tr>
+    {% for row in popular_movies %}
+    <tr><td>{{ row.movie__name }}</td><td>{{ row.bookings }}</td><td>{{ row.revenue }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Busiest Theaters</h2>
+<table class="adminlist">
+    <tr><th>Theater</th><th>Booked Seats</th><th>Total Seats</th><th>Occupancy</th><th>Revenue</th></tr>
+    {% for row in busiest_theaters %}
+    <tr>
+        <td>{{ row.name }}</td>
+        <td>{{ row.booked_seats }}</td>
+        <td>{{ row.total_seats }}</td>
+        <td>{{ row.occupancy_rate|floatformat:2 }}%</td>
+        <td>{{ row.revenue|default:"0.00" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Peak Booking Hours</h2>
+<table class="adminlist">
+    <tr><th>Hour</th><th>Bookings</th></tr>
+    {% for row in peak_hours %}
+    <tr><td>{{ row.hour }}</td><td>{{ row.bookings }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Cancellation Rate</h2>
+<table class="adminlist">
+    <tr><th>Total Bookings</th><th>Cancelled</th><th>Rate</th></tr>
+    <tr>
+        <td>{{ cancellation_rate.total }}</td>
+        <td>{{ cancellation_rate.cancelled }}</td>
+        <td>{{ cancellation_rate.percent|floatformat:2 }}%</td>
+    </tr>
+</table>
+{% endblock %}

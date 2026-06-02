@@ -1,0 +1,9 @@
+Hi {{ user.username }},
+
+Your booking is confirmed.
+
+Movie: {{ bookings.0.movie.name }}
+Theater: {{ bookings.0.theater.name }}
+Show: {{ bookings.0.theater.time }}
+Seats: {% for booking in bookings %}{{ booking.seat.seat_number }}{% if not forloop.last %}, {% endif %}{% endfor %}
+Payment ID: {{ payment_id }}

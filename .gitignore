@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.env
+db.sqlite3
+media/*
+!media/movies/
+media/movies/*
+!media/movies/demo_posters/
+!media/movies/demo_posters/*
+staticfiles/

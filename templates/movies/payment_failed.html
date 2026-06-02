@@ -1,0 +1,8 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="alert alert-danger">Payment could not be verified. {{ error }}</div>
+    <a href="{% url 'movie_list' %}" class="btn btn-outline-primary">Back to Movies</a>
+</div>
+{% endblock %}
