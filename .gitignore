@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 .env
+.venv/
+.codex-deps-check/
 db.sqlite3
 media/*
 !media/movies/
